@@ -1,7 +1,3 @@
-Here’s a detailed **README.md** file for your project documentation, covering everything we've done so far:
-
----
-
 # **Recursive GPT Implementation in C++**
 
 This project aims to implement a GPT-like architecture in C++ with a focus on recursive reasoning capabilities. The project is structured to ensure scalability and modularity for future expansion.
