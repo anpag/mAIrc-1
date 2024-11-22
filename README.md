@@ -1,7 +1,3 @@
-Here’s a detailed **README.md** file for your project documentation, covering everything we've done so far:
-
----
-
 # **Recursive GPT Implementation in C++**
 
 This project aims to implement a GPT-like architecture in C++ with a focus on recursive reasoning capabilities. The project is structured to ensure scalability and modularity for future expansion.
@@ -18,6 +14,7 @@ project/
 ├── build/      # Compiled output files
 ├── tests/      # Unit tests
 ├── data/       # Data files (corpus, training data, etc.)
+├── logs/       # Log files for debugging and tracking execution
 ```
 
 ---
@@ -85,57 +82,58 @@ g++ test.cpp -o test
 ## **Implemented Components**
 
 ### **1. Tokenizer**
-The `Tokenizer` class is responsible for breaking raw text into smaller parts (tokens) and converting them into integers for model processing.
+The `Tokenizer` class preprocesses raw text by tokenizing it and converting it into token IDs.  
+**Features**:
+- Build a vocabulary from a text corpus.
+- Convert input text into a sequence of token IDs.
 
-#### **Features**
-- **Vocabulary Building**: Create a vocabulary from a corpus of text.
-- **Tokenization**: Convert input text into a sequence of token IDs.
+### **2. Embedding Layer**
+The `EmbeddingLayer` maps token IDs to dense vector representations.  
+**Features**:
+- Learnable embedding matrix initialized with random values.
+- Provides embeddings for input token IDs.
 
-#### **File Locations**
-- Header: `include/Tokenizer.h`
-- Implementation: `src/Tokenizer.cpp`
+### **3. Transformer Block**
+The `TransformerBlock` is the core of the GPT architecture.  
+**Features**:
+- **Multi-Head Attention**: Computes attention weights and combines token relationships.
+- **Feed-Forward Network**: Applies non-linear transformations.
+- **Residual Connections and Layer Normalization**: Stabilizes and enhances training.
+- Integrated with logging for debugging and execution tracking.
 
-#### **Code Example**
-```cpp
-#include "Tokenizer.h"
-#include <iostream>
+#### **Logging**
+The project now includes a logging system that tracks the execution of major steps and outputs them to:
+- The console.
+- Log files in the `logs/` directory (e.g., `logs/transformer_block.log`).
 
-int main() {
-    Tokenizer tokenizer;
-    tokenizer.build_vocab({"hello world", "this is a test", "hello again"});
+---
 
-    auto tokens = tokenizer.tokenize("hello world");
-    for (const auto& token : tokens) {
-        std::cout << token << " ";
-    }
-    std::cout << std::endl;
+## **How to Run**
 
-    return 0;
-}
-```
+1. **Compile Tests**:
+   Example for Transformer Block test:
+   ```bash
+   mkdir -p logs
+   g++ -Iinclude -I/usr/include/eigen3 -o test_transformer tests/test_transformer_block.cpp src/TransformerBlock.cpp src/Logger.cpp
+   ./test_transformer
+   ```
 
-#### **Compile and Test**
-```bash
-g++ -Iinclude -o test_tokenizer tests/test_tokenizer.cpp src/Tokenizer.cpp
-./test_tokenizer
-```
-
-#### **Expected Output**
-```
-0 1
-```
-Where `0` corresponds to `hello` and `1` corresponds to `world` (vocabulary IDs).
+2. **Expected Logs**:
+   Logs provide step-by-step insights into the computation process, such as:
+   ```
+   [INFO] Initializing TransformerBlock
+   [DEBUG] Multi-head attention parameters initialized
+   [INFO] Starting forward pass of TransformerBlock
+   [DEBUG] Computed Q, K, V matrices
+   [DEBUG] Performing scaled dot-product attention
+   [DEBUG] Applied first feed-forward layer and ReLU activation
+   ```
 
 ---
 
 ## **Next Steps**
 
-### **Planned Components**
-1. **EmbeddingLayer**:
-   - Converts token IDs into dense vector representations.
-2. **TransformerBlock**:
-   - Implements multi-head attention and feed-forward networks.
-3. **GPTModel**:
-   - Combines embeddings and multiple transformer blocks to form the GPT architecture.
-
+1. Integrate the `Tokenizer`, `EmbeddingLayer`, and `TransformerBlock` into a unified `GPTModel` class.
+2. Add forward and training logic for the GPT model.
+3. Design and implement tests with sample text input.
 
