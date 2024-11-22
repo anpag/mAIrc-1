@@ -1,7 +1,0 @@
-[DEBUG] Embedding matrix initialized with random values
-[DEBUG] Fetching embeddings for token IDs
-[DEBUG] Token ID 0 mapped to embedding
-[DEBUG] Token ID 1 mapped to embedding
-[DEBUG] Token ID 2 mapped to embedding
-[DEBUG] Token ID 9 mapped to embedding
-[WARNING] Unknown token ID 11 mapped to zero vector
