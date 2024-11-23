@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main() {
-    // Example: Vocabulary size = 10, Embedding dimension = 5
+    // Example: Vocabulary size = 10, Embedding dimension = 128
     EmbeddingLayer embedding_layer(10, 5);
 
     // Example token IDs

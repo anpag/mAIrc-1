@@ -5,7 +5,7 @@ int main() {
     Tokenizer tokenizer;
     tokenizer.build_vocab({"hello world", "this is a test", "hello again"});
 
-    auto tokens = tokenizer.tokenize("hello world");
+    auto tokens = tokenizer.tokenize("hello world this is a test again");
     for (const auto& token : tokens) {
         std::cout << token << " ";
     }
