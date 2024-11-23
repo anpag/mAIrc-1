@@ -1,0 +1,36 @@
+#ifndef GPT_MODEL_H
+#define GPT_MODEL_H
+
+#include "Tokenizer.h"
+#include "EmbeddingLayer.h"
+#include "TransformerBlock.h"
+#include "Loss.h"
+#include <Eigen/Dense>
+#include <vector>
+#include <utility> // For std::pair
+
+class GPTModel {
+private:
+    Tokenizer tokenizer;                  // Tokenizer for text preprocessing
+    EmbeddingLayer embedding_layer;      // Embedding layer
+    std::vector<TransformerBlock> layers; // Transformer blocks
+    Eigen::MatrixXd output_weights;      // Output layer weights
+    Eigen::VectorXd output_bias;         // Output layer bias
+    double learning_rate;                // Learning rate for optimization
+
+public:
+    GPTModel(int vocab_size, int embedding_dim, int num_layers, int num_heads, int feedforward_dim, double learning_rate = 0.001);
+
+    // Forward pass returning embeddings and predictions
+    std::pair<Eigen::MatrixXd, Eigen::MatrixXd> forward_with_embeddings(const std::string& input_text);
+
+    // Forward pass for predictions only
+    Eigen::MatrixXd forward(const std::string& input_text) {
+        return forward_with_embeddings(input_text).second;
+    }
+
+    // Training method
+    double train(const std::string& input_text, const Eigen::MatrixXd& targets);
+};
+
+#endif

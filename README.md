@@ -1,11 +1,11 @@
 # **Recursive GPT Implementation in C++**
 
-This project implements a GPT-like architecture in C++ with a focus on recursive reasoning capabilities. The model integrates tokenization, embedding layers, and transformer blocks into a unified architecture, complete with logging and debugging support.
+This project implements a GPT-like architecture in C++ with a focus on recursive reasoning capabilities. The model integrates tokenization, embedding layers, and transformer blocks into a unified architecture, complete with training functionality, logging, and debugging support.
 
 ---
 
 ## **Project Structure**
-The project follows a modular directory structure:
+
 ```
 project/
 ├── src/        # Source files
@@ -20,35 +20,7 @@ project/
 
 ---
 
-## **Environment Setup**
-
-### **1. System Setup**
-Run the following commands to set up the development environment on Ubuntu:
-```bash
-sudo apt update && sudo apt upgrade -y
-sudo apt install build-essential cmake g++ libboost-all-dev libeigen3-dev \
-                 libopenblas-dev libdlib-dev libarmadillo-dev libopencv-dev \
-                 git gdb valgrind nvidia-cuda-toolkit -y
-```
-
-### **2. Verify Setup**
-Test the C++ environment with a simple program:
-```cpp
-#include <iostream>
-int main() {
-    std::cout << "C++ Environment Setup Successful!" << std::endl;
-    return 0;
-}
-```
-Compile and run:
-```bash
-g++ test.cpp -o test
-./test
-```
-
----
-
-## **Implemented Components**
+## **Implemented Features**
 
 ### **1. Tokenizer**
 **Purpose**: Converts raw text into token IDs.
@@ -68,12 +40,24 @@ g++ test.cpp -o test
   - **Multi-Head Attention**: Captures relationships between tokens.
   - **Feed-Forward Network**: Applies non-linear transformations.
   - **Residual Connections**: Stabilizes gradients for deeper models.
-  - Fully integrated logging for debugging.
 
-### **4. Logging System**
-**Purpose**: Provides detailed execution tracking with timestamps in ISO 8601 format.
-- Logs messages at levels: `INFO`, `DEBUG`, `WARNING`, `ERROR`.
-- Logs are sequentially written to `logs/project.log`.
+### **4. Output Layer**
+**Purpose**: Maps final transformer outputs to logits and probabilities.
+- **Features**:
+  - Softmax activation to convert logits into probabilities.
+
+### **5. Loss Function**
+**Purpose**: Measures the difference between predictions and targets.
+- **Features**:
+  - Cross-entropy loss for classification.
+  - Gradient computation for weight updates.
+
+### **6. Training Functionality**
+**Purpose**: Trains the GPTModel to minimize loss on a given dataset.
+- **Features**:
+  - Forward pass to compute predictions.
+  - Backward pass to compute gradients.
+  - Weight and bias updates using gradient descent.
 
 ---
 
@@ -84,10 +68,9 @@ Use the Makefile to compile the project. Run:
 ```bash
 make
 ```
-This will build the main executable and any necessary tests.
 
-### **2. Run Tests**
-Use the Makefile to execute tests:
+### **2. Run Training Tests**
+Use the Makefile to execute the training test:
 ```bash
 make test
 ```
@@ -101,27 +84,23 @@ make clean
 ---
 
 ## **Example Logs**
-The following log entries are written to `logs/project.log` during execution:
+Training logs provide detailed insights into the forward and backward passes:
 ```
-[2024-11-22T15:50:00.123] [INFO] Initializing TransformerBlock
-[2024-11-22T15:50:00.456] [DEBUG] Multi-head attention parameters initialized
-[2024-11-22T15:50:00.789] [INFO] Starting forward pass of TransformerBlock
-[2024-11-22T15:50:01.123] [DEBUG] Computed Q, K, V matrices for multi-head attention
-[2024-11-22T15:50:01.456] [INFO] End-to-end execution completed successfully.
+[2024-11-23T15:30:00.123] [INFO] Starting GPTModel training pass
+[2024-11-23T15:30:00.456] [DEBUG] Computed loss: 1.2034
+[2024-11-23T15:30:00.789] [DEBUG] gradients: 2x100
+[2024-11-23T15:30:01.123] [DEBUG] output_weights: 100x16
+[2024-11-23T15:30:01.456] [DEBUG] Updated model weights and biases
+[2024-11-23T15:30:02.123] [INFO] Training pass completed successfully.
 ```
 
 ---
 
 ## **Next Steps**
+1. **Evaluation Metrics**:
+   - Implement metrics like accuracy or perplexity.
+2. **Real Dataset**:
+   - Train the model on a realistic text dataset.
+3. **Optimization**:
+   - Speed up training with threading or GPU acceleration.
 
-### **1. Integrate Components into GPTModel**
-- Combine Tokenizer, EmbeddingLayer, and TransformerBlock.
-- Implement an end-to-end forward pass.
-
-### **2. Add Training and Inference**
-- Define a loss function for text generation.
-- Implement a training loop to optimize the model.
-
-### **3. Test with Real Data**
-- Use a small dataset for evaluation.
-- Validate the model’s accuracy and output quality.

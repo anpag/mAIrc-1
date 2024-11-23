@@ -10,7 +10,8 @@ BUILD_DIR = build
 LOG_DIR = logs
 
 # Target executable for tests
-TARGETS = test_gpt
+# TARGETS = test_gpt
+TARGETS = test_gpt_training
 
 # Source files
 SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
