@@ -1,11 +1,11 @@
 # **Recursive GPT Implementation in C++**
 
-This project aims to implement a GPT-like architecture in C++ with a focus on recursive reasoning capabilities. The project is structured to ensure scalability and modularity for future expansion.
+This project implements a GPT-like architecture in C++ with a focus on recursive reasoning capabilities. The model integrates tokenization, embedding layers, and transformer blocks into a unified architecture, complete with logging and debugging support.
 
 ---
 
 ## **Project Structure**
-The project follows a modular directory structure for clean organization:
+The project follows a modular directory structure:
 ```
 project/
 ├── src/        # Source files
@@ -15,6 +15,7 @@ project/
 ├── tests/      # Unit tests
 ├── data/       # Data files (corpus, training data, etc.)
 ├── logs/       # Log files for debugging and tracking execution
+├── Makefile    # Build and run instructions
 ```
 
 ---
@@ -22,49 +23,17 @@ project/
 ## **Environment Setup**
 
 ### **1. System Setup**
-Run the following commands to prepare the development environment on Ubuntu:
-
+Run the following commands to set up the development environment on Ubuntu:
 ```bash
-# Update system packages
 sudo apt update && sudo apt upgrade -y
-
-# Install essential build tools
-sudo apt install build-essential cmake g++ -y
-
-# Install Boost (general-purpose C++ libraries)
-sudo apt install libboost-all-dev -y
-
-# Install Eigen (linear algebra library)
-sudo apt install libeigen3-dev -y
-
-# Install OpenBLAS (optimized basic linear algebra operations)
-sudo apt install libopenblas-dev -y
-
-# Install DLib (machine learning and image processing)
-sudo apt install libdlib-dev -y
-
-# Install Armadillo (linear algebra and ML library)
-sudo apt install libarmadillo-dev -y
-
-# Install OpenCV (optional: for computer vision tasks)
-sudo apt install libopencv-dev -y
-
-# Install Git (version control system)
-sudo apt install git -y
-
-# Install GDB (debugging tool)
-sudo apt install gdb -y
-
-# Install Valgrind (memory and performance profiler)
-sudo apt install valgrind -y
-
-# Install CUDA (GPU acceleration for machine learning)
-sudo apt install nvidia-cuda-toolkit -y
+sudo apt install build-essential cmake g++ libboost-all-dev libeigen3-dev \
+                 libopenblas-dev libdlib-dev libarmadillo-dev libopencv-dev \
+                 git gdb valgrind nvidia-cuda-toolkit -y
 ```
 
 ### **2. Verify Setup**
 Test the C++ environment with a simple program:
-```bash
+```cpp
 #include <iostream>
 int main() {
     std::cout << "C++ Environment Setup Successful!" << std::endl;
@@ -82,58 +51,77 @@ g++ test.cpp -o test
 ## **Implemented Components**
 
 ### **1. Tokenizer**
-The `Tokenizer` class preprocesses raw text by tokenizing it and converting it into token IDs.  
-**Features**:
-- Build a vocabulary from a text corpus.
-- Convert input text into a sequence of token IDs.
+**Purpose**: Converts raw text into token IDs.
+- **Features**:
+  - Build a vocabulary from a text corpus.
+  - Tokenize input text into a sequence of integers (token IDs).
 
 ### **2. Embedding Layer**
-The `EmbeddingLayer` maps token IDs to dense vector representations.  
-**Features**:
-- Learnable embedding matrix initialized with random values.
-- Provides embeddings for input token IDs.
+**Purpose**: Maps token IDs into dense vector representations.
+- **Features**:
+  - Learnable embedding matrix initialized with random values.
+  - Provides embeddings for input token IDs.
 
 ### **3. Transformer Block**
-The `TransformerBlock` is the core of the GPT architecture.  
-**Features**:
-- **Multi-Head Attention**: Computes attention weights and combines token relationships.
-- **Feed-Forward Network**: Applies non-linear transformations.
-- **Residual Connections and Layer Normalization**: Stabilizes and enhances training.
-- Integrated with logging for debugging and execution tracking.
+**Purpose**: Implements multi-head attention and feed-forward layers.
+- **Features**:
+  - **Multi-Head Attention**: Captures relationships between tokens.
+  - **Feed-Forward Network**: Applies non-linear transformations.
+  - **Residual Connections**: Stabilizes gradients for deeper models.
+  - Fully integrated logging for debugging.
 
-#### **Logging**
-The project now includes a logging system that tracks the execution of major steps and outputs them to:
-- The console.
-- Log files in the `logs/` directory (e.g., `logs/transformer_block.log`).
+### **4. Logging System**
+**Purpose**: Provides detailed execution tracking with timestamps in ISO 8601 format.
+- Logs messages at levels: `INFO`, `DEBUG`, `WARNING`, `ERROR`.
+- Logs are sequentially written to `logs/project.log`.
 
 ---
 
-## **How to Run**
+## **How to Build and Run**
 
-1. **Compile Tests**:
-   Example for Transformer Block test:
-   ```bash
-   mkdir -p logs
-   g++ -Iinclude -I/usr/include/eigen3 -o test_transformer tests/test_transformer_block.cpp src/TransformerBlock.cpp src/Logger.cpp
-   ./test_transformer
-   ```
+### **1. Build the Project**
+Use the Makefile to compile the project. Run:
+```bash
+make
+```
+This will build the main executable and any necessary tests.
 
-2. **Expected Logs**:
-   Logs provide step-by-step insights into the computation process, such as:
-   ```
-   [INFO] Initializing TransformerBlock
-   [DEBUG] Multi-head attention parameters initialized
-   [INFO] Starting forward pass of TransformerBlock
-   [DEBUG] Computed Q, K, V matrices
-   [DEBUG] Performing scaled dot-product attention
-   [DEBUG] Applied first feed-forward layer and ReLU activation
-   ```
+### **2. Run Tests**
+Use the Makefile to execute tests:
+```bash
+make test
+```
+
+### **3. Clean Build Files**
+To remove all compiled files and logs, use:
+```bash
+make clean
+```
+
+---
+
+## **Example Logs**
+The following log entries are written to `logs/project.log` during execution:
+```
+[2024-11-22T15:50:00.123] [INFO] Initializing TransformerBlock
+[2024-11-22T15:50:00.456] [DEBUG] Multi-head attention parameters initialized
+[2024-11-22T15:50:00.789] [INFO] Starting forward pass of TransformerBlock
+[2024-11-22T15:50:01.123] [DEBUG] Computed Q, K, V matrices for multi-head attention
+[2024-11-22T15:50:01.456] [INFO] End-to-end execution completed successfully.
+```
 
 ---
 
 ## **Next Steps**
 
-1. Integrate the `Tokenizer`, `EmbeddingLayer`, and `TransformerBlock` into a unified `GPTModel` class.
-2. Add forward and training logic for the GPT model.
-3. Design and implement tests with sample text input.
+### **1. Integrate Components into GPTModel**
+- Combine Tokenizer, EmbeddingLayer, and TransformerBlock.
+- Implement an end-to-end forward pass.
 
+### **2. Add Training and Inference**
+- Define a loss function for text generation.
+- Implement a training loop to optimize the model.
+
+### **3. Test with Real Data**
+- Use a small dataset for evaluation.
+- Validate the model’s accuracy and output quality.
