@@ -3,7 +3,7 @@
 
 #include <Eigen/Dense>
 #include <vector>
-#include "Logger.h"
+
 
 class TransformerBlock {
 private:
@@ -17,8 +17,6 @@ private:
     // Parameters for feed-forward network
     Eigen::MatrixXd W1, W2;
     Eigen::VectorXd b1, b2;
-
-    Logger logger;  // Add logger instance
 
     // Helper methods
     Eigen::MatrixXd scaled_dot_product_attention(

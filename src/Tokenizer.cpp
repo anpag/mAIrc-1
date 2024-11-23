@@ -1,12 +1,17 @@
 #include "Tokenizer.h"
-#include <sstream>
+#include "Logger.h"
 
-Tokenizer::Tokenizer() : delimiter(" ") {}
+Tokenizer::Tokenizer() : delimiter(" ") {
+    Logger::get_instance().log("Tokenizer initialzied with default delimiter: ' '", LogLevel::INFO);
+}
 
-Tokenizer::Tokenizer(const std::string& delimiter) : delimiter(delimiter) {}
+Tokenizer::Tokenizer(const std::string& delimiter) : delimiter(delimiter) {
+        Logger::get_instance().log("Tokenizer initialzied with custom delimiter: " + delimiter, LogLevel::INFO);
+}
 
 // Tokenize text into a sequence of integers (IDs)
 std::vector<int> Tokenizer::tokenize(const std::string& text) {
+    Logger::get_instance().log("Tokenizing text: " + text, LogLevel::INFO);
     std::vector<int> tokens;
     std::stringstream ss(text);
     std::string word;
@@ -24,6 +29,7 @@ std::vector<int> Tokenizer::tokenize(const std::string& text) {
 
 //Build vocabualry from a list of senteces
 void Tokenizer::build_vocab(const std::vector<std::string>& corpus) {
+    Logger::get_instance().log("Building vocabulary from corpus: ", LogLevel::INFO);
     int id = 0;
     for (const auto& sentence : corpus) {
         std::stringstream ss(sentence);

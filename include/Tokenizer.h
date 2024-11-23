@@ -5,10 +5,13 @@
 #include <vector>
 #include <unordered_map>
 
+
 class Tokenizer {
 private:
     std::unordered_map<std::string, int> vocab; // Maps words to token IDs
     std::string delimiter; // Delimiter for splitting text
+
+
 
 public:
     Tokenizer();
