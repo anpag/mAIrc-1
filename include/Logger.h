@@ -9,8 +9,8 @@
 #include <iomanip>
 
 enum class LogLevel {
-    INFO,
     DEBUG,
+    INFO,
     WARNING,
     ERROR
 };
@@ -34,7 +34,8 @@ public:
                                 LogLevel log_level = LogLevel::DEBUG);
 
     void log(const std::string& message, LogLevel message_level = LogLevel::INFO);
-
+    void set_level(LogLevel log_level);
+    LogLevel get_level() const { return level; }
 };
 
 #endif

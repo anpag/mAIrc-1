@@ -2,23 +2,24 @@
 #define TOKENIZER_H
 
 #include <string>
-#include <vector>
 #include <unordered_map>
-
+#include <vector>
+#include <sstream>
 
 class Tokenizer {
 private:
-    std::unordered_map<std::string, int> vocab; // Maps words to token IDs
-    std::string delimiter; // Delimiter for splitting text
-
-
+    std::unordered_map<std::string, int> vocab; // Token-to-ID mapping
+    std::string delimiter;                      // Delimiter for tokenization
 
 public:
-    Tokenizer();
-    explicit Tokenizer(const std::string& delimiter);
+    // Constructor
+    explicit Tokenizer(const std::string& delim = " ");
 
-    std::vector<int> tokenize (const std::string& text); // Converts text to tokens
-    void build_vocab(const std::vector<std::string>& corpus); // Builds vocabulary from corpus
+    // Build vocabulary from a corpus of sentences
+    void build_vocab(const std::vector<std::string>& corpus);
+
+    // Tokenize a given input string into token IDs
+    std::vector<int> tokenize(const std::string& text) const;
 };
 
 #endif

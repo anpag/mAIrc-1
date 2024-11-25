@@ -7,7 +7,6 @@
 #include "Loss.h"
 #include <Eigen/Dense>
 #include <vector>
-#include <utility> // For std::pair
 
 class GPTModel {
 private:
@@ -21,16 +20,9 @@ private:
 public:
     GPTModel(int vocab_size, int embedding_dim, int num_layers, int num_heads, int feedforward_dim, double learning_rate = 0.001);
 
-    // Forward pass returning embeddings and predictions
-    std::pair<Eigen::MatrixXd, Eigen::MatrixXd> forward_with_embeddings(const std::string& input_text);
-
-    // Forward pass for predictions only
-    Eigen::MatrixXd forward(const std::string& input_text) {
-        return forward_with_embeddings(input_text).second;
-    }
-
-    // Training method
+    Eigen::MatrixXd forward(const std::string& input_text);
     double train(const std::string& input_text, const Eigen::MatrixXd& targets);
+    Tokenizer& get_tokenizer() { return tokenizer; }
 };
 
 #endif

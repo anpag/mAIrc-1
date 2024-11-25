@@ -1,44 +1,49 @@
 #include "Tokenizer.h"
 #include "Logger.h"
 
-Tokenizer::Tokenizer() : delimiter(" ") {
-    Logger::get_instance().log("Tokenizer initialzied with default delimiter: ' '", LogLevel::INFO);
+// Constructor
+Tokenizer::Tokenizer(const std::string& delim) : delimiter(delim) {
+    Logger::get_instance().log("Tokenizer initialized with delimiter: '" + delimiter + "'", LogLevel::INFO);
 }
 
-Tokenizer::Tokenizer(const std::string& delimiter) : delimiter(delimiter) {
-        Logger::get_instance().log("Tokenizer initialzied with custom delimiter: " + delimiter, LogLevel::INFO);
-}
-
-// Tokenize text into a sequence of integers (IDs)
-std::vector<int> Tokenizer::tokenize(const std::string& text) {
-    Logger::get_instance().log("Tokenizing text: " + text, LogLevel::INFO);
-    std::vector<int> tokens;
-    std::stringstream ss(text);
-    std::string word;
-
-    while (std::getline(ss, word, delimiter[0])) {
-        if (vocab.find(word) != vocab.end()) {
-            tokens.push_back(vocab[word]); // Convert word to token ID
-        } else {
-            tokens.push_back(-1); // Unknown token
-        }
-    }
-
-    return tokens;
-}
-
-//Build vocabualry from a list of senteces
+// Build vocabulary from a corpus of sentences
 void Tokenizer::build_vocab(const std::vector<std::string>& corpus) {
-    Logger::get_instance().log("Building vocabulary from corpus: ", LogLevel::INFO);
+    Logger::get_instance().log("Building vocabulary from corpus", LogLevel::INFO);
+
     int id = 0;
     for (const auto& sentence : corpus) {
-        std::stringstream ss(sentence);
+        std::istringstream stream(sentence);
         std::string word;
-        while (std::getline(ss, word, delimiter[0])) {
+        while (std::getline(stream, word, delimiter[0])) {
             if (vocab.find(word) == vocab.end()) {
-                vocab[word] = id++; // Assign unique ID to each word
+                vocab[word] = id++;
+                Logger::get_instance().log("Added word to vocab: '" + word + "' with ID: " + std::to_string(id - 1), LogLevel::DEBUG);
             }
         }
     }
+
+    Logger::get_instance().log("Vocabulary built with " + std::to_string(vocab.size()) + " unique tokens", LogLevel::INFO);
 }
 
+// Tokenize a given input string into token IDs
+std::vector<int> Tokenizer::tokenize(const std::string& text) const {
+    Logger::get_instance().log("Tokenizing input text: '" + text + "'", LogLevel::DEBUG);
+
+    std::vector<int> token_ids;
+    std::istringstream stream(text);
+    std::string word;
+    while (std::getline(stream, word, delimiter[0])) {
+        auto it = vocab.find(word);
+        int token_id = (it != vocab.end()) ? it->second : -1;
+        token_ids.push_back(token_id);
+
+        if (token_id == -1) {
+            Logger::get_instance().log("Unknown token: '" + word + "', mapped to -1", LogLevel::WARNING);
+        } else {
+            Logger::get_instance().log("Token: '" + word + "' mapped to ID: " + std::to_string(token_id), LogLevel::DEBUG);
+        }
+    }
+
+    Logger::get_instance().log("Tokenization completed. Total tokens: " + std::to_string(token_ids.size()), LogLevel::INFO);
+    return token_ids;
+}

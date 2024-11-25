@@ -2,8 +2,6 @@
 #define TRANSFORMER_BLOCK_H
 
 #include <Eigen/Dense>
-#include <vector>
-
 
 class TransformerBlock {
 private:
@@ -24,7 +22,6 @@ private:
 
 public:
     TransformerBlock(int embedding_dim, int num_heads, int feedforward_dim);
-
     Eigen::MatrixXd forward(const Eigen::MatrixXd& input);
 };
 
